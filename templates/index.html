@@ -10,16 +10,15 @@
 <body>
 
     <div id="login-screen" class="auth-container">
-        <div class="login-card">
-            <img src="{{ url_for('static', filename='imgs/edu.gif') }}" alt="Logo Edunex" class="main-logo">
-            <h1>Edunex</h1>
-            <div class="input-group">
-                <input type="text" id="user" placeholder="Usuário">
-                <input type="password" id="pass" placeholder="Senha">
-            </div>
-            <button onclick="handleLogin()">Acessar Sistema</button>
-        </div>
+    <div class="login-card">
+        <img src="{{ url_for('static', filename='edu.gif') }}" class="main-logo">
+        <h2>Edunex</h2>
+        <input type="text" id="user" placeholder="Usuário">
+        <input type="password" id="pass" placeholder="Senha">
+        
+        <button id="btn-login" onclick="handleLogin()">ACESSAR SISTEMA</button>
     </div>
+</div>
 
     <div id="dashboard-screen" class="main-layout hidden">
         <aside class="sidebar">
