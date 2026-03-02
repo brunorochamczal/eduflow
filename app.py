@@ -18,39 +18,46 @@ def get_db():
 def index():
     return render_template('index.html')
 
-# LOGIN CORRIGIDO
+# LOGIN 
 @app.route('/api/login', methods=['POST'])
 def login():
-    try:
-        d = request.get_json()
-        if not d or 'user' not in d or 'pass' not in d:
-            return jsonify({"status": "erro", "mensagem": "Dados incompletos"}), 400
-            
-        conn = get_db()
-        cur = conn.cursor()
-        cur.execute('SELECT username, nome FROM usuarios WHERE username = %s AND password = %s', (d['user'], d['pass']))
-        user = cur.fetchone()
-        cur.close()
-        conn.close()
-        
-        if user:
-            return jsonify({"status": "sucesso", "user": user}), 200
-        return jsonify({"status": "erro", "mensagem": "Usuário ou senha inválidos"}), 401
-    except Exception as e:
-        return jsonify({"status": "erro", "mensagem": str(e)}), 500
-
-# ROTA PARA DASHBOARD DE INSIGHTS (MODERNO)
-@app.route('/api/stats', methods=['GET'])
-def get_stats():
+    d = request.get_json()
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) as total FROM alunos")
-    total = cur.fetchone()['total']
-    cur.execute("SELECT COUNT(*) as pagos FROM alunos WHERE pago = TRUE")
-    pagos = cur.fetchone()['pagos']
+    cur.execute('SELECT username, nome FROM usuarios WHERE username = %s AND password = %s', (d['user'], d['pass']))
+    user = cur.fetchone()
     cur.close()
     conn.close()
-    return jsonify({"total": total, "pagos": pagos, "pendentes": total - pagos})
+    if user: return jsonify({"status": "sucesso", "user": user}), 200
+    return jsonify({"status": "erro", "mensagem": "Usuário ou senha incorretos"}), 401
+
+# RADAR PEDAGÓGICO (ALUNOS COM MUITAS FALTAS)
+@app.route('/api/radar', methods=['GET'])
+def radar():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('''
+        SELECT a.nome, COUNT(f.id) as total_faltas 
+        FROM alunos a 
+        JOIN frequencia f ON a.id = f.aluno_id 
+        WHERE f.presente = FALSE 
+        GROUP BY a.nome HAVING COUNT(f.id) >= 3
+    ''')
+    alertas = cur.fetchall()
+    cur.close()
+    conn.close()
+    return jsonify(alertas)
+
+# COMUNICADOS E STATS (BI)
+@app.route('/api/stats', methods=['GET'])
+def stats():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) as total, SUM(CASE WHEN pago THEN 1 ELSE 0 END) as pagos FROM alunos")
+    res = cur.fetchone()
+    cur.close()
+    conn.close()
+    return jsonify(res)
 
 # --- CADASTROS BÁSICOS ---
 
@@ -193,6 +200,7 @@ def relatorio_geral():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
 
 
 
