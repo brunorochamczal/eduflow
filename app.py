@@ -19,6 +19,36 @@ def index():
     pasta_atual = os.path.dirname(os.path.abspath(__file__))
     return send_from_directory('.', 'index.html')
 
+@app.route('/style.css')
+def css(): return send_from_directory('.', 'style.css')
+
+@app.route('/script.js')
+def js(): return send_from_directory('.', 'script.js')
+
+# Login Simples
+@app.route('/login', methods=['POST'])
+def login():
+    d = request.get_json()
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM usuarios WHERE username = %s AND password = %s', (d['user'], d['pass']))
+    user = cur.fetchone()
+    cur.close()
+    conn.close()
+    return jsonify(user) if user else (jsonify({"erro": "Invalido"}), 401)
+
+# Endpoints de Cadastro (Exemplo Professores)
+@app.route('/professores', methods=['POST'])
+def add_professor():
+    d = request.get_json()
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO professores (nome, especialidade) VALUES (%s, %s)', (d['nome'], d['espec']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({"status": "ok"})
+
 # --- ALUNOS E MATRÍCULAS ---
 @app.route('/alunos', methods=['GET'])
 def listar_alunos():
@@ -87,5 +117,6 @@ def relatorios():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
 
 
