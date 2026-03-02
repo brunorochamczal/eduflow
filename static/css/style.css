@@ -178,22 +178,18 @@ body, html {
     font-size: 28px;
 }
 
-.main-logo {
-    width: 180px;      /* Aumentei de 80px para 180px */
-    height: 180px;     /* Mantém a proporção quadrada */
-    border-radius: 50%;
-    margin-bottom: 20px;
-    border: 4px solid white;
-    object-fit: cover;  /* Garante que a imagem preencha o círculo sem distorcer */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
+
 
 /* Ajuste de Tamanho da Logo */
 .main-logo {
-    width: 150px; /* Estava muito pequena, agora está imponente */
-    height: auto;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+    width: 250px;      /* Aumente este valor para o tamanho desejado */
+    height: 250px;     /* Mantenha igual ao width para ser um círculo perfeito */
+    object-fit: contain;
+    border-radius: 50%;
+    margin: 0 auto 20px auto;
+    display: block;
+    background: white; /* Garante que o fundo da logo apareça bem */
+    padding: 10px;
 }
 
 /* Centralização dos Formulários Dinâmicos */
