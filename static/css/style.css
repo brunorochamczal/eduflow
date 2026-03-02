@@ -1,29 +1,91 @@
 :root {
-    --primary: #4361ee;
-    --bg: #f0f2f5;
-    --white: #ffffff;
-    --text: #2b2d42;
+    --glass: rgba(255, 255, 255, 0.2);
+    --primary: #6366f1;
+    --grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; color: var(--text); }
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--grad);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 
-.hidden { display: none !important; }
+.auth-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass);
+    padding: 3rem;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    color: white;
+}
 
-/* Login */
-.auth-container { height: 100vh; display: flex; align-items: center; justify-content: center; }
-.login-card { background: var(--white); padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 350px; }
-.main-logo { width: 80px; margin-bottom: 20px; }
+.main-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    border: 3px solid white;
+    object-fit: cover;
+}
 
-/* Dashboard Grid */
-.grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 30px; }
-.card-btn { 
-    background: var(--white); 
-    padding: 40px 20px; 
-    border-radius: 15px; 
-    text-align: center; 
-    cursor: pointer; 
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid var(--glass);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+}
+
+input::placeholder { color: #ddd; }
+
+button#btn-login {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    background: white;
+    color: #764ba2;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
     transition: 0.3s;
+    margin-top: 1rem;
+}
+
+button#btn-login:hover { transform: scale(1.02); background: #f0f0f0; }
+
+/* Grid Moderno */
+.grid-menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.card-btn {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
     border: 1px solid #eee;
 }
-.card-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2); border-color: var(--primary); }
-.card-btn i { font-size: 40px; color: var(--primary); margin-bottom: 15px; }
+
+.card-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-10px);
+}
