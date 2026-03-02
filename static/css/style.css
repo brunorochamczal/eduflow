@@ -1,91 +1,16 @@
-:root {
-    --glass: rgba(255, 255, 255, 0.2);
-    --primary: #6366f1;
-    --grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
+:root { --primary: #6366f1; --bg: #0f172a; }
+body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
+.hidden { display: none !important; }
 
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: var(--grad);
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
+/* LOGIN GLASS */
+.auth-container { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); padding: 40px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.1); text-align: center; width: 350px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+.main-logo { width: 90px; height: 90px; border-radius: 50%; margin-bottom: 20px; border: 2px solid var(--primary); }
+input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white; box-sizing: border-box; }
+#btn-login { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.3s; }
+#btn-login:hover { background: #4f46e5; transform: scale(1.02); }
 
-.auth-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--glass);
-    padding: 3rem;
-    border-radius: 24px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-    color: white;
-}
-
-.main-logo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 1.5rem;
-    border: 3px solid white;
-    object-fit: cover;
-}
-
-input {
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border-radius: 12px;
-    border: 1px solid var(--glass);
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    outline: none;
-}
-
-input::placeholder { color: #ddd; }
-
-button#btn-login {
-    width: 100%;
-    padding: 15px;
-    border-radius: 12px;
-    border: none;
-    background: white;
-    color: #764ba2;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-top: 1rem;
-}
-
-button#btn-login:hover { transform: scale(1.02); background: #f0f0f0; }
-
-/* Grid Moderno */
-.grid-menu {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 20px;
-}
-
-.card-btn {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: 1px solid #eee;
-}
-
-.card-btn:hover {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-10px);
-}
+/* DASHBOARD GRID */
+.grid-menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 40px; }
+.card-btn { background: white; color: #1e293b; padding: 30px; border-radius: 24px; text-align: center; cursor: pointer; transition: 0.3s; }
+.card-btn:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4); }
+.card-btn i { font-size: 35px; color: var(--primary); margin-bottom: 10px; display: block; }
