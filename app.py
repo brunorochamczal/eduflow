@@ -67,6 +67,72 @@ def relatorios():
     conn.close()
     return jsonify({"faturamento": float(total), "inadimplentes": devedores})
 
+
+# --- DIÁRIO DE CLASSE ---
+@app.route('/diario', methods=['POST'])
+def salvar_diario():
+    d = request.get_json()
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('''
+        INSERT INTO diario (serie, turno, conteudo, observacoes) 
+        VALUES (%s, %s, %s, %s)
+    ''', (d['serie'], d['turno'], d['conteudo'], d['observacoes']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({"status": "Gravado com sucesso"}), 201
+
+# --- REGISTRO DE NOTAS ---
+@app.route('/notas', methods=['POST'])
+def lancar_nota():
+    d = request.get_json()
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('''
+        INSERT INTO notas (aluno_id, bimestre, materia, valor) 
+        VALUES (%s, %s, %s, %s)
+    ''', (d['aluno_id'], d['bimestre'], d['materia'], d['valor']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({"status": "Nota lançada"}), 201
+
+
+
+# --- DIÁRIO DE CLASSE ---
+@app.route('/diario', methods=['POST'])
+def salvar_diario():
+    d = request.get_json()
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('''
+        INSERT INTO diario (serie, turno, conteudo, observacoes) 
+        VALUES (%s, %s, %s, %s)
+    ''', (d['serie'], d['turno'], d['conteudo'], d['observacoes']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({"status": "Gravado com sucesso"}), 201
+
+# --- REGISTRO DE NOTAS ---
+@app.route('/notas', methods=['POST'])
+def lancar_nota():
+    d = request.get_json()
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('''
+        INSERT INTO notas (aluno_id, bimestre, materia, valor) 
+        VALUES (%s, %s, %s, %s)
+    ''', (d['aluno_id'], d['bimestre'], d['materia'], d['valor']))
+    conn.commit()
+    cur.close()
+    conn.close()
+    return jsonify({"status": "Nota lançada"}), 201
+
+
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
