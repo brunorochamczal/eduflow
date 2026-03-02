@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edunex | Gestão Escolar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="login-screen" class="auth-container">
+        <div class="login-card">
+            <img src="{{ url_for('static', filename='edu.gif') }}" alt="Logo Edunex" class="main-logo">
+            <h1>Edunex</h1>
+            <div class="input-group">
+                <input type="text" id="user" placeholder="Usuário">
+                <input type="password" id="pass" placeholder="Senha">
+            </div>
+            <button onclick="handleLogin()">Acessar Sistema</button>
+        </div>
+    </div>
+
+    <div id="dashboard-screen" class="main-layout hidden">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span>EDUNEX</span>
+            </div>
+            <nav>
+                <button onclick="showSection('home')"><i class="fa-solid fa-grid-2"></i> Dashboard</button>
+                <button onclick="handleLogout()" class="btn-exit">Sair</button>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <section id="home-section" class="grid-menu">
+                <div class="card-btn" onclick="loadModule('alunos')">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <h3>Alunos</h3>
+                </div>
+                <div class="card-btn" onclick="loadModule('professores')">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <h3>Professores</h3>
+                </div>
+                <div class="card-btn" onclick="loadModule('turmas')">
+                    <i class="fa-solid fa-users-rectangle"></i>
+                    <h3>Turmas</h3>
+                </div>
+                <div class="card-btn" onclick="loadModule('disciplinas')">
+                    <i class="fa-solid fa-book"></i>
+                    <h3>Disciplinas</h3>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
