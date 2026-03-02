@@ -178,6 +178,16 @@ body, html {
     font-size: 28px;
 }
 
+.main-logo {
+    width: 180px;      /* Aumentei de 80px para 180px */
+    height: 180px;     /* Mantém a proporção quadrada */
+    border-radius: 50%;
+    margin-bottom: 20px;
+    border: 4px solid white;
+    object-fit: cover;  /* Garante que a imagem preencha o círculo sem distorcer */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
 /* Cores dos Ícones */
 .blue { background: #e0e7ff; color: #4338ca; }
 .green { background: #dcfce7; color: #15803d; }
