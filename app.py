@@ -16,6 +16,7 @@ def get_db():
 # --- ROTA INICIAL (ENTREGA O FRONTEND) ---
 @app.route('/')
 def index():
+    pasta_atual = os.path.dirname(os.path.abspath(__file__))
     return send_from_directory('.', 'index.html')
 
 # --- ALUNOS E MATRÍCULAS ---
@@ -86,4 +87,5 @@ def relatorios():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
 
