@@ -18,19 +18,39 @@ def get_db():
 def index():
     return render_template('index.html')
 
-# --- AUTENTICAÇÃO ---
-@app.route('/login', methods=['POST'])
+# LOGIN CORRIGIDO
+@app.route('/api/login', methods=['POST'])
 def login():
-    d = request.get_json()
+    try:
+        d = request.get_json()
+        if not d or 'user' not in d or 'pass' not in d:
+            return jsonify({"status": "erro", "mensagem": "Dados incompletos"}), 400
+            
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute('SELECT username, nome FROM usuarios WHERE username = %s AND password = %s', (d['user'], d['pass']))
+        user = cur.fetchone()
+        cur.close()
+        conn.close()
+        
+        if user:
+            return jsonify({"status": "sucesso", "user": user}), 200
+        return jsonify({"status": "erro", "mensagem": "Usuário ou senha inválidos"}), 401
+    except Exception as e:
+        return jsonify({"status": "erro", "mensagem": str(e)}), 500
+
+# ROTA PARA DASHBOARD DE INSIGHTS (MODERNO)
+@app.route('/api/stats', methods=['GET'])
+def get_stats():
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM usuarios WHERE username = %s AND password = %s', (d['user'], d['pass']))
-    user = cur.fetchone()
+    cur.execute("SELECT COUNT(*) as total FROM alunos")
+    total = cur.fetchone()['total']
+    cur.execute("SELECT COUNT(*) as pagos FROM alunos WHERE pago = TRUE")
+    pagos = cur.fetchone()['pagos']
     cur.close()
     conn.close()
-    if user:
-        return jsonify({"status": "sucesso", "nome": user['nome']}), 200
-    return jsonify({"status": "erro"}), 401
+    return jsonify({"total": total, "pagos": pagos, "pendentes": total - pagos})
 
 # --- CADASTROS BÁSICOS ---
 
@@ -173,6 +193,7 @@ def relatorio_geral():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
 
 
 
