@@ -1,54 +1,42 @@
-const API = window.location.origin;
-
 async function handleLogin() {
     const user = document.getElementById('user').value;
     const pass = document.getElementById('pass').value;
     const btn = document.getElementById('btn-login');
 
-    if (!user || !pass) return alert("Preencha tudo!");
-
-    btn.innerText = "Verificando...";
-    btn.disabled = true;
-
+    btn.innerText = "Carregando...";
+    
     try {
-        const response = await fetch(`${API}/api/login`, {
+        const res = await fetch('/api/login', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user, pass })
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({user, pass})
         });
+        const data = await res.json();
 
-        const data = await response.json();
-
-        if (response.ok) {
+        if (res.ok) {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('dashboard-screen').classList.remove('hidden');
-            document.getElementById('user-display').innerText = data.user.nome;
-            loadStats(); // Carrega os gráficos modernos
+            loadRadar(); // Carrega funcionalidade moderna de faltas
         } else {
-            alert(data.mensagem || "Erro ao acessar");
+            alert(data.mensagem);
         }
-    } catch (err) {
-        alert("Erro de conexão com o servidor");
+    } catch (e) {
+        alert("Erro de conexão!");
     } finally {
         btn.innerText = "Acessar Sistema";
-        btn.disabled = false;
     }
 }
 
-async function loadStats() {
-    // Aqui você integraria uma biblioteca como Chart.js para o BI
-    const res = await fetch(`${API}/api/stats`);
-    const stats = await res.json();
-    console.log("Estatísticas para o BI:", stats);
+async function loadRadar() {
+    const res = await fetch('/api/radar');
+    const alertas = await res.json();
+    if(alertas.length > 0) {
+        console.log("Radar Pedagógico detectou riscos:", alertas);
+        // Aqui você pode injetar um aviso visual no Dashboard
+    }
 }
 
 function showSection(section) {
-    if(section === 'home') {
-        document.getElementById('home-section').classList.remove('hidden');
-        document.getElementById('dynamic-content').classList.add('hidden');
-    } else {
-        document.getElementById('home-section').classList.add('hidden');
-        document.getElementById('dynamic-content').classList.remove('hidden');
-        document.getElementById('module-container').innerHTML = `<h2>Módulo: ${section.toUpperCase()}</h2><p>Carregando ferramentas avançadas...</p>`;
-    }
+    // Lógica para esconder o grid e mostrar formulários
+    alert("Abrindo módulo de " + section);
 }
