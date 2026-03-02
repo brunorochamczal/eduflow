@@ -188,6 +188,40 @@ body, html {
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
+/* Ajuste de Tamanho da Logo */
+.main-logo {
+    width: 150px; /* Estava muito pequena, agora está imponente */
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}
+
+/* Centralização dos Formulários Dinâmicos */
+.form-modern {
+    max-width: 500px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-modern input, .form-modern select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.form-modern button {
+    background: #6366f1;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 /* Cores dos Ícones */
 .blue { background: #e0e7ff; color: #4338ca; }
 .green { background: #dcfce7; color: #15803d; }
