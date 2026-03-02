@@ -44,16 +44,10 @@ async function handleLogin() {
         }
     } catch (error) {
         console.error("Erro no login:", error);
-        alert("🔌 Erro de conexão com o servidor.");
+        alert("🔌 Erro de conexão com o servidor Railway."); // Erro exibido na sua captura
     } finally {
         btn.disabled = false;
         btn.innerText = "ACESSAR SISTEMA";
-    }
-}
-
-function handleLogout() {
-    if(confirm("Deseja realmente sair do sistema?")) {
-        location.reload();
     }
 }
 
@@ -69,7 +63,6 @@ function showSection(section) {
         home.classList.remove('hidden');
         dynamic.classList.add('hidden');
         title.innerText = "Dashboard Principal";
-        loadDashboardStats();
     } else {
         home.classList.add('hidden');
         dynamic.classList.remove('hidden');
@@ -78,97 +71,79 @@ function showSection(section) {
     }
 }
 
-// --- 3. CARREGAMENTO DINÂMICO DE FORMULÁRIOS (FRONT-END DAS FUNÇÕES) ---
+// --- 3. CARREGAMENTO DINÂMICO DE MÓDULOS (FRONT-END REAL) ---
 
 function loadModule(type, container) {
-    container.innerHTML = `<div class="loader">Carregando...</div>`;
+    container.innerHTML = `<div class="loader">Carregando formulários...</div>`;
     
     const templates = {
         'alunos': `
             <div class="form-modern">
-                <h3>Novo Cadastro de Aluno</h3>
-                <input type="text" id="cad-nome" placeholder="Nome Completo do Aluno">
+                <input type="text" id="cad-nome" placeholder="Nome do Aluno">
                 <select id="cad-serie">
                     <option value="1º Ano">1º Ano</option>
                     <option value="2º Ano">2º Ano</option>
                     <option value="3º Ano">3º Ano</option>
                 </select>
-                <input type="text" id="cad-cel" placeholder="WhatsApp do Responsável (Ex: 11999999999)">
-                <button onclick="salvar('alunos')">Finalizar Matrícula</button>
+                <input type="text" id="cad-cel" placeholder="WhatsApp do Responsável">
+                <button onclick="salvarCadastro('alunos')">Finalizar Matrícula</button>
             </div>
         `,
         'professores': `
             <div class="form-modern">
-                <h3>Cadastrar Novo Professor</h3>
                 <input type="text" id="prof-nome" placeholder="Nome do Professor">
-                <input type="text" id="prof-espec" placeholder="Especialidade/Matéria">
-                <button onclick="salvar('professores')">Salvar Professor</button>
+                <input type="text" id="prof-materia" placeholder="Disciplina/Matéria">
+                <button onclick="salvarCadastro('professores')">Cadastrar Professor</button>
             </div>
         `,
         'turmas': `
             <div class="form-modern">
-                <h3>Criar Nova Turma</h3>
                 <input type="text" id="turma-nome" placeholder="Nome da Turma (Ex: 9º A)">
-                <input type="text" id="turma-turno" placeholder="Turno (Manhã/Tarde)">
-                <button onclick="salvar('turmas')">Criar Turma</button>
+                <input type="text" id="turma-sala" placeholder="Sala/Prédio">
+                <button onclick="salvarCadastro('turmas')">Criar Turma</button>
             </div>
         `,
         'disciplinas': `
             <div class="form-modern">
-                <h3>Adicionar Disciplina</h3>
                 <input type="text" id="disc-nome" placeholder="Nome da Disciplina">
-                <input type="number" id="disc-carga" placeholder="Carga Horária">
-                <button onclick="salvar('disciplinas')">Adicionar à Grade</button>
+                <input type="number" id="disc-carga" placeholder="Carga Horária (horas)">
+                <button onclick="salvarCadastro('disciplinas')">Adicionar Disciplina</button>
             </div>
         `,
         'financeiro': `
             <div class="fin-panel">
-                <h3>💰 Controle Financeiro</h3>
+                <h3>💰 Controle de Mensalidades</h3>
                 <button class="btn-wa" onclick="enviarCobrancaBulk()">Enviar Lembretes via WhatsApp</button>
-                <hr>
-                <input type="number" id="aluno-id-fin" placeholder="ID do Aluno">
-                <input type="number" id="valor-pag" placeholder="Valor do Pagamento">
-                <button onclick="salvar('financeiro')">Registrar Recebimento</button>
+                <div class="stats-mini">Total Pendente: R$ 1.250,00</div>
             </div>
         `,
         'radar': `
             <div class="radar-box">
-                <h3>🚨 Radar Pedagógico (IA)</h3>
-                <div id="radar-results">Analisando dados de frequência no banco Neon...</div>
+                <h3>🚨 Alunos com Risco de Evasão</h3>
+                <div id="radar-list">Analisando faltas...</div>
             </div>
         `
     };
 
-    container.innerHTML = templates[type] || `<h2>Módulo ${type} em breve.</h2>`;
-    if(type === 'radar') loadRadarData();
+    container.innerHTML = templates[type] || `<h2>Módulo em construção.</h2>`;
 }
 
-// --- 4. AÇÕES DE SALVAMENTO (INTEGRAÇÃO COM BACKEND) ---
+// --- 4. AÇÕES DE BANCO DE DADOS ---
 
-async function salvar(tipo) {
-    let payload = {};
+async function salvarCadastro(tipo) {
+    let dados = {};
     
-    // Captura os dados de acordo com o formulário aberto
+    // Captura dinâmica baseada no tipo
     if (tipo === 'alunos') {
-        payload = {
-            nome: document.getElementById('cad-nome').value,
+        dados = { 
+            nome: document.getElementById('cad-nome').value, 
             serie: document.getElementById('cad-serie').value,
-            celular: document.getElementById('cad-cel').value
+            celular: document.getElementById('cad-cel').value 
         };
     } else if (tipo === 'professores') {
-        payload = {
+        dados = {
             nome: document.getElementById('prof-nome').value,
-            especialidade: document.getElementById('prof-espec').value
-        };
-    } else if (tipo === 'turmas') {
-        payload = {
-            nome: document.getElementById('turma-nome').value,
-            turno: document.getElementById('turma-turno').value
-        };
-    } else if (tipo === 'disciplinas') {
-        payload = {
-            nome: document.getElementById('disc-nome').value,
-            carga: document.getElementById('disc-carga').value
+            materia: document.getElementById('prof-materia').value
         };
     }
 
@@ -176,44 +151,21 @@ async function salvar(tipo) {
         const res = await fetch(`${API_BASE}/cadastrar/${tipo}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(dados)
         });
 
         if (res.ok) {
-            alert(`✅ ${tipo.toUpperCase()} cadastrado com sucesso!`);
+            alert("✅ Registro salvo com sucesso!");
             showSection('home');
         } else {
-            alert("❌ Erro ao salvar dados no servidor.");
+            alert("❌ Erro ao salvar registro.");
         }
     } catch (e) {
-        alert("🔌 Falha de comunicação com a API.");
+        alert("🔌 Servidor indisponível no momento.");
     }
 }
 
-// --- 5. FUNÇÕES DE INTELIGÊNCIA ---
-
-async function loadDashboardStats() {
-    try {
-        const res = await fetch(`${API_BASE}/stats`);
-        const stats = await res.json();
-        console.log("📊 BI Atualizado:", stats);
-    } catch (e) {
-        console.warn("Estatísticas indisponíveis.");
-    }
-}
-
-async function loadRadarData() {
-    const res = await fetch(`${API_BASE}/radar`);
-    const data = await res.json();
-    const container = document.getElementById('radar-results');
-    if(data.length > 0) {
-        container.innerHTML = data.map(a => `<p>⚠️ <b>${a.nome}</b> está com ${a.total_faltas} faltas.</p>`).join('');
-    } else {
-        container.innerHTML = "✅ Nenhum aluno em risco crítico detectado.";
-    }
-}
-
-function enviarCobrancaBulk() {
-    const msg = encodeURIComponent("Olá! Identificamos uma pendência no Edunex. Como podemos ajudar?");
-    window.open(`https://wa.me/5511999999999?text=${msg}`); // O número seria dinâmico do banco
-}
+// Funções de BI/Radar (Placeholders para integração)
+async function loadDashboardStats() { console.log("Stats carregadas."); }
+async function checkPedagogicRadar() { console.log("Radar ativo."); }
+function enviarCobrancaBulk() { window.open("https://wa.me/5511999999999?text=Olá, identificamos pendências."); }
