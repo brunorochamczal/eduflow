@@ -1,31 +1,24 @@
 import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-# Puxa a Connection String das variáveis de ambiente do Railway
+# Configuração da Database (Neon/Railway)
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 def get_db():
     return psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
 
-# --- ROTA INICIAL (ENTREGA O FRONTEND) ---
+# --- NAVEGAÇÃO ---
 @app.route('/')
 def index():
-    pasta_atual = os.path.dirname(os.path.abspath(__file__))
-    return send_from_directory('.', 'index.html')
+    return render_template('index.html')
 
-@app.route('/style.css')
-def css(): return send_from_directory('.', 'style.css')
-
-@app.route('/script.js')
-def js(): return send_from_directory('.', 'script.js')
-
-# Login Simples
+# --- AUTENTICAÇÃO ---
 @app.route('/login', methods=['POST'])
 def login():
     d = request.get_json()
@@ -35,49 +28,123 @@ def login():
     user = cur.fetchone()
     cur.close()
     conn.close()
-    return jsonify(user) if user else (jsonify({"erro": "Invalido"}), 401)
+    if user:
+        return jsonify({"status": "sucesso", "nome": user['nome']}), 200
+    return jsonify({"status": "erro"}), 401
 
-# Endpoints de Cadastro (Exemplo Professores)
-@app.route('/professores', methods=['POST'])
-def add_professor():
+# --- CADASTROS BÁSICOS ---
+
+@app.route('/api/professores', methods=['GET', 'POST'])
+def gerenciar_professores():
+    conn = get_db()
+    cur = conn.cursor()
+    if request.method == 'POST':
+        d = request.get_json()
+        cur.execute('INSERT INTO professores (nome, especialidade, email) VALUES (%s, %s, %s)', 
+                    (d['nome'], d['especialidade'], d.get('email')))
+        conn.commit()
+        msg = {"status": "Professor cadastrado"}
+    else:
+        cur.execute('SELECT * FROM professores ORDER BY nome')
+        msg = cur.fetchall()
+    cur.close()
+    conn.close()
+    return jsonify(msg)
+
+@app.route('/api/disciplinas', methods=['GET', 'POST'])
+def gerenciar_disciplinas():
+    conn = get_db()
+    cur = conn.cursor()
+    if request.method == 'POST':
+        d = request.get_json()
+        cur.execute('INSERT INTO disciplinas (nome, carga_horaria) VALUES (%s, %s)', 
+                    (d['nome'], d['carga_horaria']))
+        conn.commit()
+        msg = {"status": "Disciplina cadastrada"}
+    else:
+        cur.execute('SELECT * FROM disciplinas ORDER BY nome')
+        msg = cur.fetchall()
+    cur.close()
+    conn.close()
+    return jsonify(msg)
+
+@app.route('/api/turmas', methods=['GET', 'POST'])
+def gerenciar_turmas():
+    conn = get_db()
+    cur = conn.cursor()
+    if request.method == 'POST':
+        d = request.get_json()
+        cur.execute('INSERT INTO turmas (nome, professor_id) VALUES (%s, %s)', 
+                    (d['nome'], d['professor_id']))
+        conn.commit()
+        msg = {"status": "Turma criada"}
+    else:
+        # Join para trazer o nome do professor responsável
+        cur.execute('''
+            SELECT t.*, p.nome as professor_nome 
+            FROM turmas t 
+            LEFT JOIN professores p ON t.professor_id = p.id 
+            ORDER BY t.nome
+        ''')
+        msg = cur.fetchall()
+    cur.close()
+    conn.close()
+    return jsonify(msg)
+
+# --- ALUNOS E NOTAS ---
+
+@app.route('/api/alunos', methods=['GET', 'POST'])
+def gerenciar_alunos():
+    conn = get_db()
+    cur = conn.cursor()
+    if request.method == 'POST':
+        d = request.get_json()
+        cur.execute('INSERT INTO alunos (nome, serie, turno) VALUES (%s, %s, %s)', 
+                    (d['nome'], d['serie'], d['turno']))
+        conn.commit()
+        msg = {"status": "Aluno matriculado"}
+    else:
+        cur.execute('SELECT * FROM alunos ORDER BY nome')
+        msg = cur.fetchall()
+    cur.close()
+    conn.close()
+    return jsonify(msg)
+
+@app.route('/api/notas', methods=['POST'])
+def lancar_nota():
     d = request.get_json()
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('INSERT INTO professores (nome, especialidade) VALUES (%s, %s)', (d['nome'], d['espec']))
+    cur.execute('INSERT INTO notas (aluno_id, bimestre, materia, valor) VALUES (%s, %s, %s, %s)',
+                (d['aluno_id'], d['bimestre'], d['materia'], d['valor']))
     conn.commit()
     cur.close()
     conn.close()
-    return jsonify({"status": "ok"})
+    return jsonify({"status": "Nota lançada"})
 
-# --- ALUNOS E MATRÍCULAS ---
-@app.route('/alunos', methods=['GET'])
-def listar_alunos():
+# --- DIÁRIO DE CLASSE ---
+
+@app.route('/api/diario', methods=['GET', 'POST'])
+def gerenciar_diario():
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM alunos ORDER BY nome ASC')
-    alunos = cur.fetchall()
+    if request.method == 'POST':
+        d = request.get_json()
+        cur.execute('INSERT INTO diario (serie, turno, conteudo, observacoes) VALUES (%s, %s, %s, %s)',
+                    (d['serie'], d['turno'], d['conteudo'], d.get('observacoes')))
+        conn.commit()
+        msg = {"status": "Registro diário salvo"}
+    else:
+        cur.execute('SELECT * FROM diario ORDER BY data_registro DESC')
+        msg = cur.fetchall()
     cur.close()
     conn.close()
-    return jsonify(alunos)
+    return jsonify(msg)
 
-@app.route('/alunos', methods=['POST'])
-def matricular():
-    d = request.get_json()
-    conn = get_db()
-    cur = conn.cursor()
-    cur.execute(
-        'INSERT INTO alunos (nome, serie, turno) VALUES (%s, %s, %s) RETURNING id',
-        (d['nome'], d['serie'], d['turno'])
-    )
-    novo_id = cur.fetchone()['id']
-    conn.commit()
-    cur.close()
-    conn.close()
-    return jsonify({"id": novo_id}), 201
+# --- FINANCEIRO E RELATÓRIOS ---
 
-# --- FINANCEIRO E PAGAMENTOS ---
-@app.route('/pagamentos', methods=['POST'])
-def registrar_pagamento():
+@app.route('/api/pagamentos', methods=['POST'])
+def pagar():
     d = request.get_json()
     conn = get_db()
     cur = conn.cursor()
@@ -86,24 +153,10 @@ def registrar_pagamento():
     conn.commit()
     cur.close()
     conn.close()
-    return jsonify({"status": "sucesso"})
+    return jsonify({"status": "Pagamento ok"})
 
-# --- DIÁRIO E NOTAS ---
-@app.route('/diario', methods=['POST'])
-def salvar_diario():
-    d = request.get_json()
-    conn = get_db()
-    cur = conn.cursor()
-    cur.execute('INSERT INTO diario (serie, turno, conteudo) VALUES (%s, %s, %s)', 
-                (d['serie'], d['turno'], d['conteudo']))
-    conn.commit()
-    cur.close()
-    conn.close()
-    return jsonify({"status": "gravado"})
-
-# --- RELATÓRIOS ---
-@app.route('/relatorios', methods=['GET'])
-def relatorios():
+@app.route('/api/relatorios', methods=['GET'])
+def relatorio_geral():
     conn = get_db()
     cur = conn.cursor()
     cur.execute('SELECT COALESCE(SUM(valor_pago), 0) as total FROM pagamentos')
@@ -112,7 +165,10 @@ def relatorios():
     devedores = cur.fetchone()['devedores']
     cur.close()
     conn.close()
-    return jsonify({"faturamento": float(total), "inadimplentes": devedores})
+    return jsonify({
+        "faturamento": float(total),
+        "inadimplentes": devedores
+    })
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
