@@ -1,13 +1,29 @@
-:root { --p: #4361ee; --s: #3f37c9; --bg: #f8f9fa; }
-body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; }
-.full-screen { height: 100vh; display: flex; align-items: center; justify-content: center; background: #fff; }
-.login-box { text-align: center; width: 320px; padding: 20px; }
-.logo { width: 120px; margin-bottom: 20px; border-radius: 50%; }
-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; }
-button { background: var(--p); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
+:root {
+    --primary: #4361ee;
+    --bg: #f0f2f5;
+    --white: #ffffff;
+    --text: #2b2d42;
+}
 
-.grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; padding: 40px; }
-.menu-card { background: white; padding: 30px; border-radius: 16px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.menu-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(67, 97, 238, 0.15); }
-.menu-card i { display: block; font-size: 40px; margin-bottom: 10px; font-style: normal; }
-.hidden { display: none; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; color: var(--text); }
+
+.hidden { display: none !important; }
+
+/* Login */
+.auth-container { height: 100vh; display: flex; align-items: center; justify-content: center; }
+.login-card { background: var(--white); padding: 40px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+.main-logo { width: 80px; margin-bottom: 20px; }
+
+/* Dashboard Grid */
+.grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 30px; }
+.card-btn { 
+    background: var(--white); 
+    padding: 40px 20px; 
+    border-radius: 15px; 
+    text-align: center; 
+    cursor: pointer; 
+    transition: 0.3s;
+    border: 1px solid #eee;
+}
+.card-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2); border-color: var(--primary); }
+.card-btn i { font-size: 40px; color: var(--primary); margin-bottom: 15px; }
