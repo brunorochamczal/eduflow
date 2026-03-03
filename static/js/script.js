@@ -26,7 +26,7 @@ async function handleLogin() {
             alert("❌ " + data.mensagem);
         }
     } catch (e) {
-        alert("🔌 Erro de conexão com o Railway.");
+        alert("🔌 Erro de conexão com o servidor Railway.");
     } finally {
         btn.disabled = false;
         btn.innerText = "ACESSAR SISTEMA";
@@ -81,4 +81,8 @@ async function salvarCadastro(tipo) {
     } catch (e) {
         alert("🔌 Servidor indisponível.");
     }
+}
+
+function handleLogout() {
+    location.reload();
 }
