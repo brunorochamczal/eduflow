@@ -1,27 +1,76 @@
-:root { --primary: #6366f1; --glass: rgba(255, 255, 255, 0.15); }
-body, html { margin: 0; font-family: 'Poppins', sans-serif; background: #f8fafc; }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary: #6366f1;
+    --glass: rgba(255, 255, 255, 0.15);
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8fafc;
+}
+
 .hidden { display: none !important; }
 
-/* LOGIN GLASSMORPHISM */
+/* TELA DE LOGIN */
 .auth-container {
-    height: 100vh; background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    height: 100vh;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
     display: flex; justify-content: center; align-items: center;
 }
+
 .login-card {
-    background: var(--glass); backdrop-filter: blur(12px); padding: 40px;
-    border-radius: 24px; width: 350px; text-align: center; border: 1px solid rgba(255,255,255,0.2);
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 40px; border-radius: 24px;
+    width: 350px; text-align: center; color: white;
 }
-.main-logo { width: 180px; height: 180px; border-radius: 50%; background: white; margin: 0 auto 20px; padding: 10px; }
 
-/* INPUTS COM FONTES BRANCAS */
-.field { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; display: flex; padding: 5px 15px; margin-bottom: 15px; }
-.field input { background: transparent; border: none; color: #ffffff !important; width: 100%; padding: 12px; outline: none; }
-.field input::placeholder { color: rgba(255,255,255,0.7); }
+.main-logo {
+    width: 150px; height: 150px; border-radius: 50%;
+    background: white; margin: 0 auto 20px; padding: 10px;
+}
 
-#btn-login { width: 100%; padding: 16px; border-radius: 12px; border: none; background: white; color: var(--primary); font-weight: bold; cursor: pointer; }
+.field {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px; display: flex; padding: 5px 15px; margin-bottom: 15px;
+}
 
-/* BOTÃO VOLTAR E FORMS */
-.btn-back { background: #e2e8f0; color: #475569; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
-.form-modern { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 10px; }
-.form-modern input, .form-modern select, .form-modern textarea { padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; }
-.form-modern button { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+/* FONTES BRANCAS NOS INPUTS */
+.field input {
+    background: transparent; border: none;
+    color: #ffffff !important; width: 100%; padding: 12px;
+    outline: none; font-family: 'Poppins', sans-serif;
+}
+
+.field input::placeholder { color: rgba(255, 255, 255, 0.7); }
+
+#btn-login {
+    width: 100%; padding: 16px; border-radius: 12px; border: none;
+    background: white; color: var(--primary); font-weight: 600; cursor: pointer;
+}
+
+/* DASHBOARD E MÓDULOS */
+.btn-back {
+    background: #e2e8f0; border: none; padding: 10px 20px;
+    border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-weight: 600;
+}
+
+.form-modern {
+    background: white; padding: 30px; border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 500px; margin: 0 auto;
+}
+
+.form-modern input, .form-modern select {
+    width: 100%; padding: 12px; margin-bottom: 15px;
+    border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;
+}
+
+.form-modern button {
+    width: 100%; padding: 15px; background: var(--primary);
+    color: white; border: none; border-radius: 10px; cursor: pointer;
+}
