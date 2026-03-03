@@ -231,6 +231,9 @@ async function carregarAlunos(c) {
 }
 
 function modalNovoAluno() {
+    // Valores EXATOS aceitos pelo CHECK CONSTRAINT do banco:
+    // alunos_serie_check: '1º Ano', '2º Ano', '3º Ano', '4º Ano', '5º Ano'
+    // alunos_turno_check: 'Manhã', 'Tarde'
     openModal(`
       <p class="modal-title">Matricular Novo Aluno</p>
       <div class="form-group"><label>Nome Completo *</label>
@@ -240,18 +243,18 @@ function modalNovoAluno() {
         <div class="form-group"><label>Série *</label>
           <select id="a-serie">
             <option value="">Selecione</option>
-            <option>1º Ano - Fundamental</option><option>2º Ano - Fundamental</option>
-            <option>3º Ano - Fundamental</option><option>4º Ano - Fundamental</option>
-            <option>5º Ano - Fundamental</option><option>6º Ano - Fundamental</option>
-            <option>7º Ano - Fundamental</option><option>8º Ano - Fundamental</option>
-            <option>9º Ano - Fundamental</option><option>1º Ano - Médio</option>
-            <option>2º Ano - Médio</option><option>3º Ano - Médio</option>
+            <option value="1º Ano">1º Ano</option>
+            <option value="2º Ano">2º Ano</option>
+            <option value="3º Ano">3º Ano</option>
+            <option value="4º Ano">4º Ano</option>
+            <option value="5º Ano">5º Ano</option>
           </select>
         </div>
         <div class="form-group"><label>Turno *</label>
           <select id="a-turno">
             <option value="">Selecione</option>
-            <option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option>
+            <option value="Manhã">Manhã</option>
+            <option value="Tarde">Tarde</option>
           </select>
         </div>
       </div>
@@ -657,7 +660,7 @@ async function carregarDiario(c) {
                    <div class="form-group"><label>Turno *</label>
                      <select id="di-turno">
                        <option value="">Selecione</option>
-                       <option>Manhã</option><option>Tarde</option><option>Noite</option>
+                       <option value="Manhã">Manhã</option><option value="Tarde">Tarde</option>
                      </select>
                    </div>
                  </div>
