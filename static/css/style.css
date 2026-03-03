@@ -110,7 +110,7 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
 
 /* Logo maior no login */
 .login-logo {
-    width: 210px;
+    width: 280px;
     height: auto;
     display: block;
     margin: 0 auto 4px;
