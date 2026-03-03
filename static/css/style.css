@@ -3,13 +3,13 @@
 :root {
     --primary: #6366f1;
     --glass: rgba(255, 255, 255, 0.15);
+    --bg: #f8fafc;
 }
 
 body, html {
-    margin: 0;
-    padding: 0;
+    margin: 0; padding: 0;
     font-family: 'Poppins', sans-serif;
-    background-color: #f8fafc;
+    background-color: var(--bg);
 }
 
 .hidden { display: none !important; }
@@ -29,48 +29,35 @@ body, html {
     width: 350px; text-align: center; color: white;
 }
 
-.main-logo {
-    width: 150px; height: 150px; border-radius: 50%;
-    background: white; margin: 0 auto 20px; padding: 10px;
-}
-
 .field {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 12px; display: flex; padding: 5px 15px; margin-bottom: 15px;
+    border-radius: 12px; display: flex; margin-bottom: 15px;
 }
 
-/* FONTES BRANCAS NOS INPUTS */
 .field input {
     background: transparent; border: none;
-    color: #ffffff !important; width: 100%; padding: 12px;
-    outline: none; font-family: 'Poppins', sans-serif;
+    color: #ffffff !important; width: 100%; padding: 15px;
+    outline: none;
 }
-
-.field input::placeholder { color: rgba(255, 255, 255, 0.7); }
 
 #btn-login {
     width: 100%; padding: 16px; border-radius: 12px; border: none;
     background: white; color: var(--primary); font-weight: 600; cursor: pointer;
 }
 
-/* DASHBOARD E MÓDULOS */
-.btn-back {
-    background: #e2e8f0; border: none; padding: 10px 20px;
-    border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-weight: 600;
+/* DASHBOARD GRID (Onde seu CSS estava sumindo) */
+.content { padding: 40px; }
+.grid-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
 }
 
-.form-modern {
+.card-btn {
     background: white; padding: 30px; border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 500px; margin: 0 auto;
+    text-align: center; cursor: pointer; border: 1px solid #eee;
+    transition: 0.3s;
 }
 
-.form-modern input, .form-modern select {
-    width: 100%; padding: 12px; margin-bottom: 15px;
-    border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;
-}
-
-.form-modern button {
-    width: 100%; padding: 15px; background: var(--primary);
-    color: white; border: none; border-radius: 10px; cursor: pointer;
-}
+.card-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
