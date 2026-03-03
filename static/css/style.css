@@ -1,161 +1,27 @@
-/* EDUNEX - Estilo Global Integrado */
-:root {
-    --primary: #6366f1;
-    --secondary: #a855f7;
-    --dark: #1e293b;
-    --bg: #f8fafc;
-    --white: #ffffff;
-    --glass: rgba(255, 255, 255, 0.15);
-}
-
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--bg);
-    overflow-x: hidden;
-}
-
+:root { --primary: #6366f1; --glass: rgba(255, 255, 255, 0.15); }
+body, html { margin: 0; font-family: 'Poppins', sans-serif; background: #f8fafc; }
 .hidden { display: none !important; }
 
-/* TELA DE LOGIN GLASSMORPHISM */
+/* LOGIN GLASSMORPHISM */
 .auth-container {
-    height: 100vh;
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 100vh; background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    display: flex; justify-content: center; align-items: center;
 }
-
 .login-card {
-    background: var(--glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 40px;
-    border-radius: 24px;
-    width: 100%;
-    max-width: 380px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    color: white;
+    background: var(--glass); backdrop-filter: blur(12px); padding: 40px;
+    border-radius: 24px; width: 350px; text-align: center; border: 1px solid rgba(255,255,255,0.2);
 }
+.main-logo { width: 180px; height: 180px; border-radius: 50%; background: white; margin: 0 auto 20px; padding: 10px; }
 
-/* LOGO AMPLIADA CIRCULAR */
-.main-logo {
-    width: 180px;
-    height: 180px;
-    object-fit: contain;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-    display: block;
-    background: white;
-    padding: 10px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
+/* INPUTS COM FONTES BRANCAS */
+.field { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; display: flex; padding: 5px 15px; margin-bottom: 15px; }
+.field input { background: transparent; border: none; color: #ffffff !important; width: 100%; padding: 12px; outline: none; }
+.field input::placeholder { color: rgba(255,255,255,0.7); }
 
-.field {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    padding: 5px 15px;
-    margin-bottom: 15px;
-    transition: 0.3s;
-}
+#btn-login { width: 100%; padding: 16px; border-radius: 12px; border: none; background: white; color: var(--primary); font-weight: bold; cursor: pointer; }
 
-.field input {
-    background: transparent;
-    border: none;
-    padding: 12px 5px;
-    color: white;
-    width: 100%;
-    outline: none;
-}
-
-#btn-login {
-    width: 100%;
-    padding: 16px;
-    border-radius: 12px;
-    border: none;
-    background: white;
-    color: var(--primary);
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.4s;
-}
-
-/* BOTÃO VOLTAR ESTILIZADO */
-.btn-back {
-    background: #e2e8f0;
-    color: #475569;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.3s;
-}
-
-.btn-back:hover { background: #cbd5e1; transform: translateX(-3px); }
-
-/* FORMULÁRIOS MODERNOS */
-.form-modern {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    max-width: 500px;
-    margin: 20px auto;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.form-modern input, .form-modern select {
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    font-size: 16px;
-    outline: none;
-}
-
-.form-modern button {
-    background: var(--primary);
-    color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* DASHBOARD */
-.content { padding: 40px; }
-.grid-menu {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 25px;
-}
-.card-btn {
-    background: white;
-    padding: 35px 25px;
-    border-radius: 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.3s;
-    border: 1px solid #f1f5f9;
-}
-.card-btn:hover { transform: translateY(-10px); box-shadow: 0 20px 25px rgba(0,0,0,0.05); }
-
-/* CORES DOS ÍCONES */
-.icon-box { width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 24px; }
-.blue { background: #e0e7ff; color: #4338ca; }
-.green { background: #dcfce7; color: #15803d; }
-.orange { background: #ffedd5; color: #c2410c; }
-.purple { background: #f3e8ff; color: #7e22ce; }
+/* BOTÃO VOLTAR E FORMS */
+.btn-back { background: #e2e8f0; color: #475569; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
+.form-modern { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 10px; }
+.form-modern input, .form-modern select, .form-modern textarea { padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; }
+.form-modern button { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
