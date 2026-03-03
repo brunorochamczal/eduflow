@@ -315,14 +315,27 @@ async function carregarProfessores(c) {
     } catch (e) { c.innerHTML = shell('Professores', erroCard(e.message)); }
 }
 
-function modalNovoProfessor() {
+async function modalNovoProfessor() {
+    // Busca disciplinas cadastradas no banco
+    let optsDisc = '<option value="">Selecione a disciplina</option>';
+    try {
+        const discs = await apiFetch('/disciplinas');
+        if (discs.length === 0) {
+            optsDisc = '<option value="">Nenhuma disciplina cadastrada ainda</option>';
+        } else {
+            optsDisc += discs.map(d => `<option value="${d.nome}">${d.nome}</option>`).join('');
+        }
+    } catch (_) {
+        optsDisc = '<option value="">Erro ao carregar disciplinas</option>';
+    }
+
     openModal(`
       <p class="modal-title">Cadastrar Professor</p>
       <div class="form-group"><label>Nome Completo *</label>
         <input type="text" id="p-nome" placeholder="Ex: Prof. Maria Santos">
       </div>
       <div class="form-group"><label>Especialidade / Disciplina *</label>
-        <input type="text" id="p-esp" placeholder="Ex: Matemática">
+        <select id="p-esp">${optsDisc}</select>
       </div>
       <div class="form-group"><label>E-mail</label>
         <input type="email" id="p-email" placeholder="professor@escola.com.br">
@@ -336,7 +349,7 @@ function modalNovoProfessor() {
 
 async function salvarProfessor() {
     const nome   = $('p-nome').value.trim();
-    const materia = $('p-esp').value.trim();
+    const materia = $('p-esp').value;
     const email  = $('p-email').value.trim();
 
     if (!nome || !materia) { showToast('Preencha os campos obrigatórios.', 'warning'); return; }
@@ -539,8 +552,16 @@ async function salvarFrequencia(ids) {
 async function carregarNotas(c) {
     loading(c);
     try {
-        const alunos = await apiFetch('/alunos');
-        const opts = alunos.map(a => `<option value="${a.id}">${a.nome}</option>`).join('');
+        // Busca alunos E disciplinas em paralelo
+        const [alunos, discs] = await Promise.all([
+            apiFetch('/alunos'),
+            apiFetch('/disciplinas')
+        ]);
+
+        const optsAluno = alunos.map(a => `<option value="${a.id}">${a.nome}</option>`).join('');
+        const optsDisc  = discs.length > 0
+            ? discs.map(d => `<option value="${d.nome}">${d.nome}</option>`).join('')
+            : '<option value="">Nenhuma disciplina cadastrada</option>';
 
         c.innerHTML = shell('Lançamento de Notas',
             `<div class="content-card">
@@ -549,7 +570,7 @@ async function carregarNotas(c) {
                  <div class="form-row cols-2">
                    <div class="form-group"><label>Aluno *</label>
                      <select id="n-aluno" onchange="buscarNotasAluno(this.value)">
-                       <option value="">Selecione o aluno</option>${opts}
+                       <option value="">Selecione o aluno</option>${optsAluno}
                      </select>
                    </div>
                    <div class="form-group"><label>Bimestre *</label>
@@ -564,7 +585,9 @@ async function carregarNotas(c) {
                  </div>
                  <div class="form-row cols-2">
                    <div class="form-group"><label>Disciplina *</label>
-                     <input type="text" id="n-disc" placeholder="Ex: Matemática">
+                     <select id="n-disc">
+                       <option value="">Selecione a disciplina</option>${optsDisc}
+                     </select>
                    </div>
                    <div class="form-group"><label>Nota (0 – 10) *</label>
                      <input type="number" id="n-val" placeholder="Ex: 8.5" min="0" max="10" step="0.1">
@@ -615,7 +638,7 @@ async function buscarNotasAluno(id) {
 async function salvarNota() {
     const aluno_id = $('n-aluno').value;
     const bimestre = $('n-bim').value;
-    const materia  = $('n-disc').value.trim();
+    const materia  = $('n-disc').value;
     const valor    = parseFloat($('n-val').value);
 
     if (!aluno_id || !bimestre || !materia || isNaN(valor)) {
@@ -655,7 +678,14 @@ async function carregarDiario(c) {
                <div class="card-body">
                  <div class="form-row cols-2">
                    <div class="form-group"><label>Série *</label>
-                     <input type="text" id="di-serie" placeholder="Ex: 7º Ano A">
+                     <select id="di-serie">
+                       <option value="">Selecione a série</option>
+                       <option value="1º Ano">1º Ano</option>
+                       <option value="2º Ano">2º Ano</option>
+                       <option value="3º Ano">3º Ano</option>
+                       <option value="4º Ano">4º Ano</option>
+                       <option value="5º Ano">5º Ano</option>
+                     </select>
                    </div>
                    <div class="form-group"><label>Turno *</label>
                      <select id="di-turno">
@@ -693,7 +723,7 @@ async function carregarDiario(c) {
 }
 
 async function salvarDiario() {
-    const serie     = $('di-serie').value.trim();
+    const serie     = $('di-serie').value;
     const turno     = $('di-turno').value;
     const conteudo  = $('di-cont').value.trim();
     const observacoes = $('di-obs').value.trim();
