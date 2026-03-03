@@ -1,7 +1,4 @@
-/* EDUNEX - Estilo Global Atualizado
-   Adaptações: Logo Ampliada, Botão Voltar e Inputs Modernos
-*/
-
+/* EDUNEX - Estilo Global Integrado */
 :root {
     --primary: #6366f1;
     --secondary: #a855f7;
@@ -9,7 +6,6 @@
     --bg: #f8fafc;
     --white: #ffffff;
     --glass: rgba(255, 255, 255, 0.15);
-    --border-glass: rgba(255, 255, 255, 0.2);
 }
 
 body, html {
@@ -22,7 +18,7 @@ body, html {
 
 .hidden { display: none !important; }
 
-/* --- TELA DE LOGIN (CORREÇÃO DOS INPUTS E LOGO) --- */
+/* TELA DE LOGIN GLASSMORPHISM */
 .auth-container {
     height: 100vh;
     background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
@@ -35,7 +31,7 @@ body, html {
     background: var(--glass);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border-glass);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 40px;
     border-radius: 24px;
     width: 100%;
@@ -45,33 +41,28 @@ body, html {
     color: white;
 }
 
-/* LOGO GRANDE E CIRCULAR (Solicitado) */
+/* LOGO AMPLIADA CIRCULAR */
 .main-logo {
-    width: 180px;      /* Tamanho ideal para destaque */
+    width: 180px;
     height: 180px;
     object-fit: contain;
     border-radius: 50%;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 20px;
     display: block;
-    background: white; 
+    background: white;
     padding: 10px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
 .field {
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--border-glass);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     display: flex;
     align-items: center;
     padding: 5px 15px;
     margin-bottom: 15px;
     transition: 0.3s;
-}
-
-.field:focus-within { 
-    border-color: white; 
-    background: rgba(255, 255, 255, 0.2); 
 }
 
 .field input {
@@ -81,10 +72,7 @@ body, html {
     color: white;
     width: 100%;
     outline: none;
-    font-size: 16px;
 }
-
-.field input::placeholder { color: rgba(255, 255, 255, 0.7); }
 
 #btn-login {
     width: 100%;
@@ -94,23 +82,16 @@ body, html {
     background: white;
     color: var(--primary);
     font-weight: 600;
-    font-size: 15px;
     cursor: pointer;
     transition: 0.4s;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
-#btn-login:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-}
-
-/* --- BOTÃO VOLTAR ESTILIZADO (ADAPTAÇÃO) --- */
+/* BOTÃO VOLTAR ESTILIZADO */
 .btn-back {
     background: #e2e8f0;
     color: #475569;
     border: none;
-    padding: 10px 18px;
+    padding: 10px 20px;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
@@ -118,65 +99,49 @@ body, html {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.3s ease;
-    font-family: inherit;
+    transition: 0.3s;
 }
 
-.btn-back:hover {
-    background: #cbd5e1;
-    color: var(--dark);
-    transform: translateX(-3px);
-}
+.btn-back:hover { background: #cbd5e1; transform: translateX(-3px); }
 
-.btn-back::before {
-    content: "←";
-    font-size: 18px;
-}
-
-/* --- FORMULÁRIOS E LAYOUT --- */
+/* FORMULÁRIOS MODERNOS */
 .form-modern {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
     max-width: 500px;
     margin: 20px auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
     gap: 15px;
-    background: white;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .form-modern input, .form-modern select {
-    padding: 12px;
-    border-radius: 8px;
+    padding: 14px;
+    border-radius: 10px;
     border: 1px solid #e2e8f0;
-    font-size: 15px;
+    font-size: 16px;
     outline: none;
 }
 
 .form-modern button {
     background: var(--primary);
     color: white;
-    padding: 14px;
+    padding: 15px;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
+    border-radius: 10px;
     font-weight: bold;
-    transition: background 0.3s;
+    cursor: pointer;
 }
 
-.form-modern button:hover { background: #4f46e5; }
-
-/* LAYOUT DASHBOARD */
-.main-layout { display: flex; height: 100vh; }
-.content { flex: 1; padding: 40px; background: var(--bg); overflow-y: auto; }
-
+/* DASHBOARD */
+.content { padding: 40px; }
 .grid-menu {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 25px;
 }
-
 .card-btn {
     background: white;
     padding: 35px 25px;
@@ -186,24 +151,10 @@ body, html {
     transition: 0.3s;
     border: 1px solid #f1f5f9;
 }
+.card-btn:hover { transform: translateY(-10px); box-shadow: 0 20px 25px rgba(0,0,0,0.05); }
 
-.card-btn:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-}
-
-.icon-box {
-    width: 65px;
-    height: 65px;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 28px;
-}
-
-/* Cores dos Ícones */
+/* CORES DOS ÍCONES */
+.icon-box { width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 24px; }
 .blue { background: #e0e7ff; color: #4338ca; }
 .green { background: #dcfce7; color: #15803d; }
 .orange { background: #ffedd5; color: #c2410c; }
