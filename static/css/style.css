@@ -4,18 +4,21 @@
    VARIÁVEIS
 ═══════════════════════════════════════ */
 :root {
-    --primary:       #2563eb;
-    --primary-dk:    #1d4ed8;
-    --primary-lt:    #dbeafe;
-    --secondary:     #7c3aed;
-    --accent:        #06b6d4;
-    --dark:          #0f172a;
-    --dark2:         #1e293b;
-    --dark3:         #334155;
-    --text:          #0f172a;
-    --muted:         #64748b;
-    --border:        #e2e8f0;
-    --bg:            #f1f5f9;
+    /* ── Paleta Eduflow ── */
+    --primary:       #e8534a;   /* coral/vermelho do logo  */
+    --primary-dk:    #d03c34;   /* coral escuro (hover)    */
+    --primary-lt:    #fde8e7;   /* coral claro (bg leve)   */
+    --secondary:     #2bbfbf;   /* turquesa do subtítulo   */
+    --secondary-lt:  #e0f7f7;   /* turquesa claro          */
+    --accent:        #f5c842;   /* dourado do livro        */
+    --accent-lt:     #fef9e3;   /* dourado claro           */
+    --dark:          #1c2b2b;   /* sidebar escuro esverdeado */
+    --dark2:         #243636;
+    --dark3:         #3a5050;
+    --text:          #1a2e2e;
+    --muted:         #6b8585;
+    --border:        #e2ecec;
+    --bg:            #f4fafa;
     --white:         #ffffff;
     --success:       #10b981;
     --danger:        #ef4444;
@@ -24,8 +27,8 @@
     --topbar-h:      64px;
     --radius:        12px;
     --radius-lg:     18px;
-    --shadow:        0 2px 16px rgba(0,0,0,0.07);
-    --shadow-lg:     0 8px 40px rgba(0,0,0,0.13);
+    --shadow:        0 2px 16px rgba(28,43,43,0.08);
+    --shadow-lg:     0 8px 40px rgba(28,43,43,0.15);
     --transition:    all .2s cubic-bezier(.4,0,.2,1);
 }
 
@@ -46,39 +49,58 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
 ═══════════════════════════════════════ */
 .auth-container {
     min-height: 100vh;
-    background: var(--dark);
+    background: linear-gradient(155deg, #1c2b2b 0%, #1e3535 55%, #162828 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     overflow: hidden;
 }
+/* Glows decorativos nas cores da logo */
+.auth-container::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(43,191,191,.1) 0%, transparent 65%);
+    top: -150px; right: -150px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.auth-container::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,83,74,.09) 0%, transparent 65%);
+    bottom: -120px; left: -100px;
+    border-radius: 50%;
+    pointer-events: none;
+}
 
 .login-bg-dots {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(rgba(37,99,235,.25) 1px, transparent 1px);
-    background-size: 28px 28px;
-    animation: dotsPan 30s linear infinite;
+    background-image: radial-gradient(rgba(43,191,191,.12) 1px, transparent 1px);
+    background-size: 30px 30px;
+    animation: dotsPan 35s linear infinite;
 }
 @keyframes dotsPan {
     from { background-position: 0 0; }
-    to   { background-position: 56px 56px; }
+    to   { background-position: 60px 60px; }
 }
 
 .login-card {
     position: relative;
     z-index: 1;
     background: rgba(255,255,255,.05);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
     border: 1px solid rgba(255,255,255,.1);
-    padding: 44px 38px 36px;
-    border-radius: 24px;
+    padding: 40px 36px 34px;
+    border-radius: 28px;
     width: 92%;
     max-width: 400px;
     text-align: center;
-    box-shadow: 0 30px 80px rgba(0,0,0,.5);
+    box-shadow: 0 32px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
     animation: cardIn .5s ease forwards;
 }
 @keyframes cardIn {
@@ -86,18 +108,22 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
     to   { opacity: 1; transform: translateY(0)   scale(1); }
 }
 
-.login-brand { margin-bottom: 32px; }
-.brand-icon {
-    width: 66px; height: 66px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-radius: 20px;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 16px;
-    font-size: 28px; color: white;
-    box-shadow: 0 8px 28px rgba(37,99,235,.45);
+.login-brand { margin-bottom: 28px; }
+
+/* Logo eduflow.gif no login */
+.login-logo {
+    width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto 6px;
+    border-radius: 14px;
+    filter: drop-shadow(0 6px 20px rgba(0,0,0,.4));
 }
-.login-brand h1 { color: white; font-size: 26px; font-weight: 700; letter-spacing: -.5px; }
-.login-brand p  { color: rgba(255,255,255,.4); font-size: 13px; margin-top: 4px; }
+
+/* Esconde o brand-icon (chapéu) na tela de login - só aparece na sidebar */
+.login-brand .brand-icon { display: none; }
+.login-brand h1 { display: none; }
+.login-brand p  { color: rgba(255,255,255,.35); font-size: 12px; margin-top: 2px; }
 
 .login-fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
 
@@ -109,7 +135,7 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
     padding: 0 16px;
     transition: var(--transition);
 }
-.field:focus-within { border-color: var(--primary); background: rgba(37,99,235,.12); }
+.field:focus-within { border-color: var(--primary); background: rgba(43,191,191,.12); }
 .field i { color: rgba(255,255,255,.35); font-size: 14px; width: 18px; flex-shrink: 0; }
 .field input {
     background: transparent; border: none;
@@ -127,9 +153,9 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
     letter-spacing: .4px; cursor: pointer;
     display: flex; align-items: center; justify-content: center; gap: 10px;
     transition: var(--transition);
-    box-shadow: 0 4px 18px rgba(37,99,235,.45);
+    box-shadow: 0 4px 18px rgba(232,83,74,.45);
 }
-#btn-login:hover    { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,.55); }
+#btn-login:hover    { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,83,74,.55); }
 #btn-login:disabled { opacity: .6; transform: none; cursor: not-allowed; }
 
 .footer-text { color: rgba(255,255,255,.18); font-size: 11px; margin-top: 22px; }
@@ -151,19 +177,29 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
 }
 
 .sidebar-header {
-    padding: 20px 16px;
-    display: flex; align-items: center; gap: 12px;
-    border-bottom: 1px solid rgba(255,255,255,.06);
+    padding: 18px 16px 16px;
+    display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid rgba(255,255,255,.07);
     flex-shrink: 0;
 }
+/* Logo eduflow.gif na sidebar */
+.sidebar-logo {
+    width: 120px;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,.3));
+}
+/* fallback se a img não carregar */
 .brand-icon-sm {
     width: 36px; height: 36px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
     font-size: 16px; color: white; flex-shrink: 0;
+    display: none; /* oculto quando a logo estiver visível */
 }
-.brand-name { font-weight: 700; font-size: 17px; letter-spacing: -.3px; }
+.brand-name { display: none; } /* nome textual oculto — logo já diz */
 
 .side-nav {
     flex: 1; padding: 12px 10px;
@@ -182,10 +218,10 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
     border-left: 3px solid transparent;
 }
 .nav-btn i { width: 18px; text-align: center; font-size: 14px; flex-shrink: 0; }
-.nav-btn:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.8); }
+.nav-btn:hover { background: rgba(232,83,74,.12); color: rgba(255,255,255,.85); }
 .nav-btn.active {
-    background: rgba(37,99,235,.18);
-    color: #93c5fd;
+    background: rgba(232,83,74,.2);
+    color: #ffb5b0;
     border-left-color: var(--primary);
 }
 
@@ -323,11 +359,11 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto; font-size: 20px;
 }
-.blue   { background: #dbeafe; color: #2563eb; }
+.blue   { background: #e0f7f7; color: #1a9f9f; }
 .green  { background: #dcfce7; color: #16a34a; }
 .red    { background: #fee2e2; color: #dc2626; }
 .orange { background: #fed7aa; color: #c2410c; }
-.purple { background: #f3e8ff; color: #7c3aed; }
+.purple { background: #fde8e7; color: var(--primary); }
 .gold   { background: #fef9c3; color: #a16207; }
 .teal   { background: #ccfbf1; color: #0d9488; }
 
@@ -403,7 +439,7 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
 .form-group textarea:focus {
     border-color: var(--primary);
     background: var(--white);
-    box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+    box-shadow: 0 0 0 3px rgba(43,191,191,.08);
 }
 .form-group textarea { resize: vertical; min-height: 88px; }
 
@@ -424,7 +460,7 @@ input, select, textarea { font-family: 'Sora', sans-serif; }
     display: inline-flex; align-items: center; gap: 7px;
     transition: var(--transition); white-space: nowrap;
 }
-.btn-primary { background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(37,99,235,.3); }
+.btn-primary { background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(232,83,74,.3); }
 .btn-primary:hover { background: var(--primary-dk); transform: translateY(-1px); }
 .btn-success { background: var(--success); color: white; }
 .btn-success:hover { background: #059669; }
@@ -460,7 +496,7 @@ tbody tr:hover td { background: #f8fafc; }
 .badge-ok   { background: #dcfce7; color: #16a34a; }
 .badge-err  { background: #fee2e2; color: #dc2626; }
 .badge-warn { background: #fef3c7; color: #d97706; }
-.badge-info { background: #dbeafe; color: #2563eb; }
+.badge-info { background: #e0f7f7; color: #1a9f9f; }
 
 /* ═══════════════════════════════════════
    RADAR
@@ -520,7 +556,7 @@ tbody tr:hover td { background: #f8fafc; }
 }
 .spinner {
     width: 28px; height: 28px;
-    border: 3px solid rgba(37,99,235,.15);
+    border: 3px solid rgba(232,83,74,.15);
     border-top-color: var(--primary);
     border-radius: 50%;
     animation: spin .7s linear infinite;
