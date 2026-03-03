@@ -7,7 +7,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Configuração da Database (Neon/Railway)
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 def get_db():
@@ -17,34 +16,40 @@ def get_db():
 def index():
     return render_template('index.html')
 
-# --- 1. AUTENTICAÇÃO ---
+# --- AUTENTICAÇÃO E BI ---
 @app.route('/api/login', methods=['POST'])
 def login():
-    try:
-        d = request.get_json()
-        conn = get_db()
-        cur = conn.cursor()
-        cur.execute('SELECT username, nome FROM usuarios WHERE username = %s AND password = %s', (d['user'], d['pass']))
-        user = cur.fetchone()
-        cur.close()
-        conn.close()
-        if user: 
-            return jsonify({"status": "sucesso", "user": user}), 200
-        return jsonify({"status": "erro", "mensagem": "Usuário ou senha incorretos"}), 401
-    except Exception as e:
-        return jsonify({"status": "erro", "mensagem": str(e)}), 500
+    d = request.get_json()
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('SELECT username, nome FROM usuarios WHERE username = %s AND password = %s', (d['user'], d['pass']))
+    user = cur.fetchone()
+    cur.close()
+    conn.close()
+    if user: return jsonify({"status": "sucesso", "user": user}), 200
+    return jsonify({"status": "erro", "mensagem": "Usuário ou senha incorretos"}), 401
 
-# --- 2. GESTÃO DE ALUNOS ---
+@app.route('/api/stats', methods=['GET'])
+def stats():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) as total, SUM(CASE WHEN pago THEN 1 ELSE 0 END) as pagos FROM alunos")
+    res = cur.fetchone()
+    cur.close()
+    conn.close()
+    return jsonify(res)
+
+# --- ROTAS DE GESTÃO (RESTORED) ---
+
 @app.route('/api/alunos', methods=['GET', 'POST'])
 def gerenciar_alunos():
     conn = get_db()
     cur = conn.cursor()
     if request.method == 'POST':
         d = request.get_json()
-        cur.execute('INSERT INTO alunos (nome, serie, turno, celular) VALUES (%s, %s, %s, %s)', 
-                    (d['nome'], d['serie'], d.get('turno', 'Manhã'), d.get('celular')))
+        cur.execute('INSERT INTO alunos (nome, serie, turno) VALUES (%s, %s, %s)', (d['nome'], d['serie'], d['turno']))
         conn.commit()
-        msg = {"status": "sucesso", "mensagem": "Aluno matriculado"}
+        msg = {"status": "Aluno matriculado"}
     else:
         cur.execute('SELECT * FROM alunos ORDER BY nome')
         msg = cur.fetchall()
@@ -52,17 +57,15 @@ def gerenciar_alunos():
     conn.close()
     return jsonify(msg)
 
-# --- 3. GESTÃO DE PROFESSORES ---
 @app.route('/api/professores', methods=['GET', 'POST'])
 def gerenciar_professores():
     conn = get_db()
     cur = conn.cursor()
     if request.method == 'POST':
         d = request.get_json()
-        cur.execute('INSERT INTO professores (nome, especialidade, email) VALUES (%s, %s, %s)', 
-                    (d['nome'], d['materia'], d.get('email', '')))
+        cur.execute('INSERT INTO professores (nome, especialidade, email) VALUES (%s, %s, %s)', (d['nome'], d['especialidade'], d.get('email')))
         conn.commit()
-        msg = {"status": "sucesso"}
+        msg = {"status": "Professor cadastrado"}
     else:
         cur.execute('SELECT * FROM professores ORDER BY nome')
         msg = cur.fetchall()
@@ -70,41 +73,46 @@ def gerenciar_professores():
     conn.close()
     return jsonify(msg)
 
-# --- 4. DIÁRIO E RADAR ---
-@app.route('/api/diario', methods=['POST'])
-def salvar_diario():
-    d = request.get_json()
+@app.route('/api/disciplinas', methods=['GET', 'POST'])
+def gerenciar_disciplinas():
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('INSERT INTO diario (serie, turno, conteudo, observacoes) VALUES (%s, %s, %s, %s)',
-                (d['serie'], d['turno'], d['conteudo'], d.get('observacoes')))
-    conn.commit()
+    if request.method == 'POST':
+        d = request.get_json()
+        cur.execute('INSERT INTO disciplinas (nome, carga_horaria) VALUES (%s, %s)', (d['nome'], d['carga_horaria']))
+        conn.commit()
+        return jsonify({"status": "Disciplina cadastrada"})
+    cur.execute('SELECT * FROM disciplinas ORDER BY nome')
+    res = cur.fetchall()
     cur.close()
     conn.close()
-    return jsonify({"status": "sucesso"})
+    return jsonify(res)
 
-@app.route('/api/radar', methods=['GET'])
-def radar():
+@app.route('/api/diario', methods=['GET', 'POST'])
+def gerenciar_diario():
     conn = get_db()
     cur = conn.cursor()
-    cur.execute('SELECT nome, serie, faltas FROM alunos WHERE faltas > 5')
-    alertas = cur.fetchall()
+    if request.method == 'POST':
+        d = request.get_json()
+        cur.execute('INSERT INTO diario (serie, turno, conteudo, observacoes) VALUES (%s, %s, %s, %s)', (d['serie'], d['turno'], d['conteudo'], d.get('observacoes')))
+        conn.commit()
+        return jsonify({"status": "Registro salvo"})
+    cur.execute('SELECT * FROM diario ORDER BY data_registro DESC')
+    res = cur.fetchall()
     cur.close()
     conn.close()
-    return jsonify(alertas)
+    return jsonify(res)
 
-# Rota de Salvamento Dinâmico para o Front-end
+# Rota dinâmica para suporte ao script.js antigo
 @app.route('/api/cadastrar/<tipo>', methods=['POST'])
-def cadastrar_via_js(tipo):
+def cadastrar_dinamico(tipo):
     if tipo == 'alunos': return gerenciar_alunos()
     if tipo == 'professores': return gerenciar_professores()
-    if tipo == 'diario': return salvar_diario()
-    return jsonify({"status": "erro", "mensagem": "Rota não encontrada"}), 404
+    return jsonify({"error": "Rota não encontrada"}), 404
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
 
 
 
