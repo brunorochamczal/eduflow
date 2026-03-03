@@ -1,8 +1,8 @@
-# 🎓 Edunex - Gestão Escolar Inteligente
+# 🎓 Eduflow - Gestão Escolar Inteligente
 
 ![Edunex Banner](static/imgs/edu.gif)
 
-O **Edunex** é uma plataforma de ERP educacional moderna, focada em UX (Experiência do Usuário) e eficiência administrativa. Desenvolvido com **Flask** e **PostgreSQL**, o sistema utiliza conceitos de *Glassmorphism* para oferecer uma interface limpa e intuitiva.
+O **Eduflow** é uma plataforma de ERP educacional moderna, focada em UX (Experiência do Usuário) e eficiência administrativa. Desenvolvido com **Flask** e **PostgreSQL**, o sistema utiliza conceitos de *Glassmorphism* para oferecer uma interface limpa e intuitiva.
 
 ## 🚀 Funcionalidades
 - **🔐 Login Seguro**: Autenticação moderna com feedback visual.
