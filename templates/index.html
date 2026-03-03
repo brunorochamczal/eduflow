@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eduflow | Gestão Escolar</title>
+    <title>Eduflow | Gestão Escolar Inteligente</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -18,11 +18,9 @@
     <div class="login-bg-dots"></div>
     <div class="login-card">
         <div class="login-brand">
-            <div class="brand-icon">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-            <h1>Eduflow</h1>
-            <p>Gestão Escolar Inteligente</p>
+            <img src="{{ url_for('static', filename='imgs/edu.gif') }}"
+                 class="login-logo"
+                 alt="Eduflow">
         </div>
 
         <div class="login-fields">
@@ -44,7 +42,7 @@
             <span id="btn-login-text">ACESSAR SISTEMA</span>
             <i class="fa-solid fa-arrow-right" id="btn-login-icon"></i>
         </button>
-        <p class="footer-text">Eduflow &copy; 2026 · Todos os direitos reservados</p>
+        <p class="footer-text">Eduflow &copy; 2026 · Gestão Escolar Inteligente</p>
     </div>
 </div>
 
@@ -56,8 +54,9 @@
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="brand-icon-sm"><i class="fa-solid fa-graduation-cap"></i></div>
-            <span class="brand-name">Eduflow</span>
+            <img src="{{ url_for('static', filename='imgs/edu.gif') }}"
+                 class="sidebar-logo"
+                 alt="Eduflow">
         </div>
 
         <nav class="side-nav">
