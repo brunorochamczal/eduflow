@@ -1,18 +1,12 @@
 const API_BASE = window.location.origin + "/api";
 
 async function handleLogin() {
-    console.log("Iniciando Login...");
     const user = document.getElementById('user').value;
     const pass = document.getElementById('pass').value;
     const btn = document.getElementById('btn-login');
 
-    if (!user || !pass) {
-        alert("Preencha todos os campos!");
-        return;
-    }
-
-    btn.innerText = "CARREGANDO...";
     btn.disabled = true;
+    btn.innerText = "AUTENTICANDO...";
 
     try {
         const res = await fetch(`${API_BASE}/login`, {
@@ -23,17 +17,17 @@ async function handleLogin() {
         const data = await res.json();
 
         if (res.ok) {
-            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('login-screen').style.display = 'none';
             document.getElementById('dashboard-screen').classList.remove('hidden');
             document.getElementById('user-display').innerText = data.user.nome;
         } else {
             alert(data.mensagem);
         }
     } catch (e) {
-        alert("Erro de conexão com o servidor.");
+        alert("Erro de conexão com o servidor Railway.");
     } finally {
-        btn.innerText = "ACESSAR SISTEMA";
         btn.disabled = false;
+        btn.innerText = "ACESSAR SISTEMA";
     }
 }
 
@@ -46,24 +40,36 @@ function showSection(section) {
         home.classList.remove('hidden');
         dynamic.classList.add('hidden');
     } else {
-        home.classList.remove('hidden'); // Garante que o container pai apareça
         home.classList.add('hidden');
         dynamic.classList.remove('hidden');
-        renderForm(section, container);
+        document.getElementById('section-title').innerText = "Gestão de " + section;
+        loadModule(section, container);
     }
 }
 
-function renderForm(type, container) {
-    const backBtn = `<button class="btn-back" onclick="showSection('home')">← Voltar</button>`;
-    const forms = {
-        'alunos': `<div class="form-modern"><h3>Novo Aluno</h3><input id="cad-nome" placeholder="Nome"><input id="cad-serie" placeholder="Série"><button onclick="salvar('alunos')">Salvar</button></div>`,
-        'professores': `<div class="form-modern"><h3>Novo Professor</h3><input id="prof-nome" placeholder="Nome"><input id="prof-materia" placeholder="Matéria"><button onclick="salvar('professores')">Salvar</button></div>`
-    };
-    container.innerHTML = backBtn + (forms[type] || "<h3>Em breve...</h3>");
+function loadModule(type, container) {
+    const back = `<button class="btn-back" onclick="showSection('home')">← Voltar</button>`;
+    if (type === 'professores') {
+        container.innerHTML = back + `
+            <div class="form-modern">
+                <h3>Cadastro de Docente</h3>
+                <input id="prof-nome" placeholder="Nome do Professor">
+                <input id="prof-materia" placeholder="Disciplina">
+                <button onclick="salvarCadastro('professores')">Cadastrar Professor</button>
+            </div>`;
+    } else if (type === 'alunos') {
+        container.innerHTML = back + `
+            <div class="form-modern">
+                <h3>Matrícula de Aluno</h3>
+                <input id="cad-nome" placeholder="Nome">
+                <input id="cad-serie" placeholder="Série">
+                <button onclick="salvarCadastro('alunos')">Finalizar</button>
+            </div>`;
+    }
 }
 
-async function salvar(tipo) {
-    const dados = tipo === 'alunos' ? 
+async function salvarCadastro(tipo) {
+    let dados = tipo === 'alunos' ? 
         { nome: document.getElementById('cad-nome').value, serie: document.getElementById('cad-serie').value } :
         { nome: document.getElementById('prof-nome').value, materia: document.getElementById('prof-materia').value };
 
@@ -73,6 +79,6 @@ async function salvar(tipo) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dados)
         });
-        if (res.ok) { alert("Sucesso!"); showSection('home'); }
-    } catch (e) { alert("Erro ao salvar."); }
+        if (res.ok) { alert("Salvo!"); showSection('home'); }
+    } catch (e) { alert("Erro de rede."); }
 }
