@@ -66,7 +66,7 @@ def gerenciar_professores():
     if request.method == 'POST':
         d = request.get_json()
         cur.execute('INSERT INTO professores (nome, especialidade, email) VALUES (%s, %s, %s)', 
-                    (d['nome'], d['especialidade'], d.get('email')))
+                    (d['nome'], d['materia'], d.get('email')))
         conn.commit()
         msg = {"status": "sucesso"}
     else:
@@ -116,7 +116,8 @@ def gerenciar_alunos():
     cur = conn.cursor()
     if request.method == 'POST':
         d = request.get_json()
-        cur.execute('INSERT INTO alunos (nome, serie, turno) VALUES (%s, %s, %s)', (d['nome'], d['serie'], d['turno']))
+        cur.execute('INSERT INTO alunos (nome, serie, turno, celular) VALUES (%s, %s, %s, %s)', 
+                    (d['nome'], d['serie'], d['turno'], d.get('celular')))
         conn.commit()
         msg = {"status": "sucesso"}
     else:
@@ -169,12 +170,12 @@ def pagar():
     conn.close()
     return jsonify({"status": "sucesso"})
 
-# --- 7. ROTA AUXILIAR PARA O FRONT ---
+# --- 7. ROTA DE CADASTRO UNIFICADA (Para o script.js) ---
 @app.route('/api/cadastrar/<tipo>', methods=['POST'])
-def cadastrar_dinamico(tipo):
+def cadastrar_via_js(tipo):
     if tipo == 'alunos': return gerenciar_alunos()
     if tipo == 'professores': return gerenciar_professores()
-    return jsonify({"status": "erro", "mensagem": "Rota não encontrada"}), 404
+    return jsonify({"status": "erro", "mensagem": "Módulo não encontrado"}), 404
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
