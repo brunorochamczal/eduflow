@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edunex | Gestão Escolar Inteligente</title>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='imgs/favoricon.png') }}">
 </head>
 <body>
@@ -15,73 +18,69 @@
         <div class="login-card">
             <img src="{{ url_for('static', filename='imgs/edu.gif') }}" alt="Logo Edunex" class="main-logo">
             
-            
-            <div class="input-group">
+            <div class="login-fields">
                 <div class="field">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="user" placeholder="Usuário" required>
                 </div>
+                
                 <div class="field">
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="pass" placeholder="Senha" required>
                 </div>
             </div>
             
-            <button onclick="handleLogin()" id="btn-login">ACESSAR SISTEMA</button>
+            <button id="btn-login" onclick="handleLogin()">ACESSAR SISTEMA</button>
+            <p class="footer-text">Edunex &copy; 2026 - Gestão Inteligente</p>
         </div>
     </div>
 
-    <div id="dashboard-screen" class="main-layout hidden">
+    <div id="dashboard-screen" class="dashboard-container hidden">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <img src="{{ url_for('static', filename='edu.gif') }}" class="mini-logo">
-                <span>EDUNEX</span>
+                <img src="{{ url_for('static', filename='imgs/edu.gif') }}" class="side-logo">
+                <h3>Edunex</h3>
             </div>
-            <nav>
-                <button onclick="showSection('home')"><i class="fa-solid fa-house"></i> Início</button>
-                <button onclick="showSection('comunicados')"><i class="fa-solid fa-bullhorn"></i> Comunicados</button>
-                <button onclick="handleLogout()" class="btn-exit"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+            <nav class="side-nav">
+                <button onclick="showSection('home')"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+                <button onclick="showSection('alunos')"><i class="fa-solid fa-user-graduate"></i> Alunos</button>
+                <button onclick="showSection('professores')"><i class="fa-solid fa-chalkboard-user"></i> Professores</button>
+                <button onclick="showSection('financeiro')"><i class="fa-solid fa-wallet"></i> Financeiro</button>
+                <button onclick="handleLogout()" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
             </nav>
         </aside>
 
-        <main class="content">
+        <main class="main-content">
             <header class="top-bar">
-                <h2 id="section-title">Dashboard Principal</h2>
-                <div class="user-info">
-                    <span id="user-display">Administrador</span>
-                    <div class="avatar"></div>
+                <div class="welcome">
+                    <h1>Olá, <span id="user-display">Usuário</span>!</h1>
+                    <p>Bem-vindo ao painel administrativo.</p>
                 </div>
             </header>
 
             <section id="home-section" class="grid-menu">
                 <div class="card-btn" onclick="showSection('alunos')">
-                    <div class="icon-box blue"><i class="fa-solid fa-user-graduate"></i></div>
-                    <h3>Alunos</h3>
-                    <p>Matrículas e Frequência</p>
+                    <div class="icon-box blue"><i class="fa-solid fa-user-plus"></i></div>
+                    <h3>Matrículas</h3>
+                    <p>Gerenciar Alunos</p>
                 </div>
 
                 <div class="card-btn" onclick="showSection('professores')">
-                    <div class="icon-box green"><i class="fa-solid fa-chalkboard-user"></i></div>
-                    <h3>Professores</h3>
-                    <p>Corpo Docente</p>
+                    <div class="icon-box purple"><i class="fa-solid fa-users-gear"></i></div>
+                    <h3>Corpo Docente</h3>
+                    <p>Gestão de Professores</p>
                 </div>
 
                 <div class="card-btn" onclick="showSection('turmas')">
-                    <div class="icon-box orange"><i class="fa-solid fa-school"></i></div>
+                    <div class="icon-box green"><i class="fa-solid fa-school"></i></div>
                     <h3>Turmas</h3>
-                    <p>Alocação e Horários</p>
-                </div>
-
-                <div class="card-btn" onclick="showSection('disciplinas')">
-                    <div class="icon-box purple"><i class="fa-solid fa-book-open"></i></div>
-                    <h3>Disciplinas</h3>
-                    <p>Grade Curricular</p>
+                    <p>Alocação de Horários</p>
                 </div>
 
                 <div class="card-btn" onclick="showSection('financeiro')">
                     <div class="icon-box gold"><i class="fa-solid fa-file-invoice-dollar"></i></div>
                     <h3>Financeiro</h3>
-                    <p>Cobrança via WhatsApp</p>
+                    <p>Status de Pagamentos</p>
                 </div>
 
                 <div class="card-btn" onclick="showSection('radar')">
@@ -92,12 +91,10 @@
             </section>
 
             <section id="dynamic-content" class="hidden">
-                    <div class="module-header">
-                        <button onclick="showSection('home')" class="btn-back">← Voltar ao Menu</button>
-                        <h2 id="module-title">Título do Módulo</h2>
-                    </div>
-                    
-                    <div id="module-container" class="form-container">
+                <div class="module-header">
+                    <h2 id="section-title">Módulo</h2>
+                </div>
+                <div id="module-container">
                     </div>
             </section>
         </main>
