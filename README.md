@@ -18,9 +18,9 @@ O **Eduflow** é uma plataforma de ERP educacional moderna, focada em UX (Experi
 - **Hospedagem**: Railway.
 
 ## 📸 Screenshots
-| Login | Dashboard | Módulos |
+| Diário | Comunicado | Dashboard |
 | :---: | :---: | :---: |
-| <img src="./static/imgs/01.png" width="280" alt="Login"/> | <img src="./static/imgs/02.png" width="280" alt="Dashboard"/> | <img src="./static/imgs/03.png" width="280" alt="Módulos"/> |
+| <img src="./static/imgs/01.png" width="280" alt="Diário"/> | <img src="./static/imgs/02.png" width="280" alt="Comunicado"/> | <img src="./static/imgs/03.png" width="280" alt="Dashboard"/> |
 
 ---
 *Desenvolvido por Bruno Rocha - 2026*
