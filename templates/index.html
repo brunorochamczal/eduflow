@@ -3,103 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edunex | Gestão Escolar Inteligente</title>
-    
+    <title>Edunex | Gestão Escolar</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='imgs/favoricon.png') }}">
 </head>
 <body>
 
-    <div id="login-screen" class="auth-container">
-        <div class="login-card">
-            <img src="{{ url_for('static', filename='imgs/edu.gif') }}" class="mini-logo">
-            
-            <div class="login-fields">
-                <div class="field">
-                    <i class="fa-solid fa-user"></i>
-                    <input type="text" id="user" placeholder="Usuário" required>
-                </div>
-                
-                <div class="field">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="pass" placeholder="Senha" required>
-                </div>
+<!-- ═══════════════════════════════════════
+     TELA DE LOGIN
+════════════════════════════════════════ -->
+<div id="login-screen" class="auth-container">
+    <div class="login-bg-dots"></div>
+    <div class="login-card">
+        <div class="login-brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
             </div>
-            
-            <button id="btn-login" onclick="handleLogin()">ACESSAR SISTEMA</button>
-            <p class="footer-text">Edunex &copy; 2026 - Gestão Inteligente</p>
+            <h1>Edunex</h1>
+            <p>Gestão Escolar Inteligente</p>
         </div>
-    </div>
 
-    <div id="dashboard-screen" class="dashboard-container hidden">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <img src="{{ url_for('static', filename='imgs/edu.gif') }}" class="side-logo">
-                <h3>Edunex</h3>
+        <div class="login-fields">
+            <div class="field">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="user" placeholder="Usuário"
+                       autocomplete="username"
+                       onkeypress="if(event.key==='Enter') handleLogin()">
             </div>
-            <nav class="side-nav">
-                <button onclick="showSection('home')"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
-                <button onclick="showSection('alunos')"><i class="fa-solid fa-user-graduate"></i> Alunos</button>
-                <button onclick="showSection('professores')"><i class="fa-solid fa-chalkboard-user"></i> Professores</button>
-                <button onclick="showSection('financeiro')"><i class="fa-solid fa-wallet"></i> Financeiro</button>
-                <button onclick="handleLogout()" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
-            </nav>
-        </aside>
+            <div class="field">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="pass" placeholder="Senha"
+                       autocomplete="current-password"
+                       onkeypress="if(event.key==='Enter') handleLogin()">
+            </div>
+        </div>
 
-        <main class="main-content">
-            <header class="top-bar">
-                <div class="welcome">
-                    <h1>Olá, <span id="user-display">Usuário</span>!</h1>
-                    <p>Bem-vindo ao painel administrativo.</p>
+        <button id="btn-login" onclick="handleLogin()">
+            <span id="btn-login-text">ACESSAR SISTEMA</span>
+            <i class="fa-solid fa-arrow-right" id="btn-login-icon"></i>
+        </button>
+        <p class="footer-text">Edunex &copy; 2026 · Todos os direitos reservados</p>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════ -->
+<div id="dashboard-screen" class="dashboard-container hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="brand-icon-sm"><i class="fa-solid fa-graduation-cap"></i></div>
+            <span class="brand-name">Edunex</span>
+        </div>
+
+        <nav class="side-nav">
+            <button class="nav-btn active" onclick="showSection('home')" data-section="home">
+                <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('alunos')" data-section="alunos">
+                <i class="fa-solid fa-user-graduate"></i><span>Alunos</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('professores')" data-section="professores">
+                <i class="fa-solid fa-chalkboard-user"></i><span>Professores</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('turmas')" data-section="turmas">
+                <i class="fa-solid fa-school"></i><span>Turmas</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('disciplinas')" data-section="disciplinas">
+                <i class="fa-solid fa-book-open"></i><span>Disciplinas</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('frequencia')" data-section="frequencia">
+                <i class="fa-solid fa-calendar-check"></i><span>Frequência</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('notas')" data-section="notas">
+                <i class="fa-solid fa-star-half-stroke"></i><span>Notas</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('diario')" data-section="diario">
+                <i class="fa-solid fa-book-bookmark"></i><span>Diário</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('financeiro')" data-section="financeiro">
+                <i class="fa-solid fa-wallet"></i><span>Financeiro</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('comunicados')" data-section="comunicados">
+                <i class="fa-solid fa-bullhorn"></i><span>Comunicados</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('radar')" data-section="radar">
+                <i class="fa-solid fa-satellite-dish"></i><span>Radar</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="avatar" id="sidebar-avatar">U</div>
+                <span id="sidebar-username">Usuário</span>
+            </div>
+            <button class="btn-logout" onclick="handleLogout()" title="Sair">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+        <header class="top-bar">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="welcome-text">
+                <h1>Olá, <span id="user-display">Usuário</span>!</h1>
+                <p id="welcome-date"></p>
+            </div>
+            <div class="top-actions">
+                <div class="notif-btn" onclick="showSection('radar')" title="Alertas de Evasão">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="notif-dot hidden" id="notif-dot"></span>
                 </div>
-            </header>
+            </div>
+        </header>
 
-            <section id="home-section" class="grid-menu">
+        <!-- HOME -->
+        <section id="home-section" class="page-section">
+            <div class="stats-row" id="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-num" id="stat-total">--</span>
+                        <span class="stat-label">Total de Alunos</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-num" id="stat-pagos">--</span>
+                        <span class="stat-label">Mensalidades Pagas</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red"><i class="fa-solid fa-circle-xmark"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-num" id="stat-inadim">--</span>
+                        <span class="stat-label">Inadimplentes</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-num" id="stat-alertas">--</span>
+                        <span class="stat-label">Alertas de Evasão</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-heading">Acesso Rápido</h2>
+            <div class="grid-menu">
                 <div class="card-btn" onclick="showSection('alunos')">
                     <div class="icon-box blue"><i class="fa-solid fa-user-plus"></i></div>
-                    <h3>Matrículas</h3>
-                    <p>Gerenciar Alunos</p>
+                    <h3>Alunos</h3><p>Matrículas e cadastro</p>
                 </div>
-
                 <div class="card-btn" onclick="showSection('professores')">
-                    <div class="icon-box purple"><i class="fa-solid fa-users-gear"></i></div>
-                    <h3>Corpo Docente</h3>
-                    <p>Gestão de Professores</p>
+                    <div class="icon-box purple"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <h3>Professores</h3><p>Corpo docente</p>
                 </div>
-
                 <div class="card-btn" onclick="showSection('turmas')">
                     <div class="icon-box green"><i class="fa-solid fa-school"></i></div>
-                    <h3>Turmas</h3>
-                    <p>Alocação de Horários</p>
+                    <h3>Turmas</h3><p>Gestão de turmas</p>
                 </div>
-
+                <div class="card-btn" onclick="showSection('frequencia')">
+                    <div class="icon-box teal"><i class="fa-solid fa-calendar-check"></i></div>
+                    <h3>Frequência</h3><p>Registro de presença</p>
+                </div>
+                <div class="card-btn" onclick="showSection('notas')">
+                    <div class="icon-box gold"><i class="fa-solid fa-star-half-stroke"></i></div>
+                    <h3>Notas</h3><p>Lançamento bimestral</p>
+                </div>
                 <div class="card-btn" onclick="showSection('financeiro')">
                     <div class="icon-box gold"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-                    <h3>Financeiro</h3>
-                    <p>Status de Pagamentos</p>
+                    <h3>Financeiro</h3><p>Pagamentos</p>
                 </div>
-
                 <div class="card-btn" onclick="showSection('radar')">
                     <div class="icon-box red"><i class="fa-solid fa-satellite-dish"></i></div>
-                    <h3>Radar</h3>
-                    <p>Risco de Evasão</p>
+                    <h3>Radar</h3><p>Risco de evasão</p>
                 </div>
-            </section>
+                <div class="card-btn" onclick="showSection('comunicados')">
+                    <div class="icon-box purple"><i class="fa-solid fa-bullhorn"></i></div>
+                    <h3>Comunicados</h3><p>Avisos e recados</p>
+                </div>
+            </div>
+        </section>
 
-            <section id="dynamic-content" class="hidden">
-                <div class="module-header">
-                    <h2 id="section-title">Módulo</h2>
-                </div>
-                <div id="module-container">
-                    </div>
-            </section>
-        </main>
+        <!-- SEÇÃO DINÂMICA -->
+        <section id="dynamic-content" class="page-section hidden">
+            <div id="module-container"></div>
+        </section>
+    </main>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden">
+    <i class="toast-icon fa-solid"></i>
+    <span class="toast-msg"></span>
+</div>
+
+<!-- MODAL -->
+<div id="modal-overlay" class="modal-overlay hidden" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div id="modal-content"></div>
     </div>
+</div>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
