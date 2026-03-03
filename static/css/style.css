@@ -79,6 +79,8 @@ body, html {
 
 .sidebar-header { padding: 25px; text-align: center; border-bottom: 1px solid #334155; }
 
+.side-logo { width: 60px; height: auto; margin-bottom: 10px; }
+
 .mini-logo { width: 50px; margin-bottom: 10px; border-radius: 8px; }
 
 .sidebar nav { display: flex; flex-direction: column; padding: 15px; gap: 8px; }
