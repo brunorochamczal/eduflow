@@ -20,7 +20,7 @@ O **Edunex** é uma plataforma de ERP educacional moderna, focada em UX (Experi�
 ## 📸 Screenshots
 | Login | Dashboard | Módulos |
 | :---: | :---: | :---: |
-| ![Login](screenshots/login.png) | ![Dash](screenshots/dash.png) | ![Forms](screenshots/forms.png) |
+| <img src="./static/imgs/01.png" width="280" alt="Login"/> | <img src="./static/imgs/02.png" width="280" alt="Dashboard"/> | <img src="./static/imgs/03.png" width="280" alt="Módulos"/> |
 
 ---
-*Desenvolvido por Bruno - 2026*
+*Desenvolvido por Bruno Rocha - 2026*
