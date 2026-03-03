@@ -123,3 +123,16 @@ async function salvarCadastro(tipo) {
         alert("🔌 Servidor indisponível ou erro de rede.");
     }
 }
+
+// Função para deslogar e voltar à tela de login
+function handleLogout() {
+    // Limpa campos de entrada para segurança
+    document.getElementById('user').value = "";
+    document.getElementById('pass').value = "";
+    
+    // Alterna as telas
+    document.getElementById('dashboard-screen').classList.add('hidden');
+    document.getElementById('login-screen').classList.remove('hidden');
+    
+    console.log("Usuário deslogado com sucesso.");
+}
